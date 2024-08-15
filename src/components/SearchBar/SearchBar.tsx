@@ -9,7 +9,11 @@ const validationSchema = Yup.object().shape({
         .required("This field is required"),
 });
 
-export default function SearchBar({ onSearch }) {
+interface SearchBarProps {
+    onSearch: (topic: string) => void;
+}
+
+export default function SearchBar({ onSearch }: SearchBarProps) {
     return (
         <div className={css.formik}>
             <Formik

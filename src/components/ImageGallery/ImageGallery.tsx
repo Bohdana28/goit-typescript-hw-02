@@ -1,7 +1,18 @@
 import css from "./ImageGallery.module.css";
 import ImageCard from "../ImageCard/ImageCard";
 
-export default function ImageGallery({ items, onImageClick }) {
+interface Image {
+    id: string;
+    url: string;
+    alt_description?: string;
+}
+
+interface ImageCardProps {
+    items: Image[];
+    onImageClick: (url: string, alt: string) => void;
+}
+
+export default function ImageGallery({ items, onImageClick }: ImageCardProps) {
     if (!items || items.length === 0) {
         return <p>No images found.</p>;
     }

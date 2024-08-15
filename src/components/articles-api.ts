@@ -3,9 +3,25 @@ import axios from "axios";
 axios.defaults.baseURL = "https://api.unsplash.com";
 const API_KEY = 'QtOocgwAsMRnNrfxO03A2yDHR41drrw-3ZPHK3EEWSI';
 
-export const fetchImages = async (topic, currentPage) => {
+interface Image {
+    id: string;
+    url: string;
+    alt_description?: string;
+}
+
+interface ApiResponse {
+    results: Array<{
+        id: string;
+        urls: {
+            small: string;
+        };
+        alt_description?: string;
+    }>;
+}
+
+export const fetchImages = async (topic: string, currentPage: number): Promise<Image[]> => {
     try {
-        const res = await axios.get(`search/photos`, {
+        const res = await axios.get<ApiResponse>(`search/photos`, {
             params: {
                 query: topic,
                 page: currentPage,
@@ -15,7 +31,7 @@ export const fetchImages = async (topic, currentPage) => {
                 Authorization: `Client-ID ${API_KEY}`,
             },
         });
-        console.log(res.data);
+        
         return res.data.results.map((image) => ({
             id: image.id,
             url: image.urls.small,

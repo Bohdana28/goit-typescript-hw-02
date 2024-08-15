@@ -9,18 +9,24 @@ import { fetchImages } from "../articles-api";
 import css from "./App.module.css";
 import toast, { Toaster } from 'react-hot-toast';
 
+interface Image {
+    id: string;
+    url: string;
+    alt_description?: string;
+}
+
 export default function App() {
-    const [images, setImages] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState("");
-    const [page, setPage] = useState(1);
-    const [topic, setTopic] = useState("");
-    const [modalIsOpen, setModalIsOpen] = useState(false);
-    const [modalImageUrl, setModalImageUrl] = useState("");
-    const [modalAltDescription, setModalAltDescription] = useState("");
+    const [images, setImages] = useState<Image[]>([]);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [error, setError] = useState<string>("");
+    const [page, setPage] = useState<number>(1);
+    const [topic, setTopic] = useState<string>("");
+    const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
+    const [modalImageUrl, setModalImageUrl] = useState<string>("");
+    const [modalAltDescription, setModalAltDescription] = useState<string>("");
 
     // Функція для обробки пошуку
-    const handleSearch = async (newTopic) => {
+    const handleSearch = async (newTopic: string) => {
         setImages([]);
         setPage(1);
         setTopic(newTopic);
@@ -33,7 +39,7 @@ export default function App() {
     };
 
     // Відкриття модального вікна
-    const openModal = (imageUrl, altDescription) => {
+    const openModal = (imageUrl: string, altDescription: string) => {
         setModalImageUrl(imageUrl);
         setModalAltDescription(altDescription);
         setModalIsOpen(true);
@@ -44,7 +50,7 @@ export default function App() {
         setModalIsOpen(false);
     };
 
-    // Виконуємо запит при зміні теми або сторінки
+    // Виконуємо запит лише при зміні теми або сторінки
     useEffect(() => {
         if (topic === '') {
             return;
@@ -60,7 +66,7 @@ export default function App() {
                 });
             } catch (error) {
                 toast.error("Something seems to have happened, please reload this page!", {position: "top-left"});
-                setError();
+                setError("Error loading images");
             } finally {
                 setLoading(false);
             }
